@@ -496,9 +496,9 @@ def netcat(to_send, host, port):
     with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
         s.connect((host, port))
         for data in to_send | traverse:
-            s.send(data)
+            s.send(data.encode())
         while 1:
-            data = s.recv(4096)
+            data = s.recv(4096).decode()
             if not data: break
             yield data
 
@@ -507,7 +507,7 @@ def netwrite(to_send, host, port):
     with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
         s.connect((host, port))
         for data in to_send | traverse:
-            s.send(data)
+            s.send(data.encode())
 
 @Pipe
 def traverse(args):
